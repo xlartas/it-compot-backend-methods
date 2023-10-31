@@ -1,2 +1,3 @@
-1. [Django base](django-base.md)
-2. [Bootstrap base](bootstrap-base.md)
+# Fast examples
+## [Django base](django-base.md)
+## [Bootstrap base](bootstrap-base.md)

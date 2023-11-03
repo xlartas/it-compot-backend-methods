@@ -38,10 +38,10 @@
 **.....**
 
 ## Цвета
-`.text-white` - белый цвет текста.<br>
-`.bg-white` - белый цвет фона.<br>
-`.border-white` - белый цвет рамки.<br>
-
+`text-white` - белый цвет текста.<br>
+`bg-white` - белый цвет фона.<br>
+`border-white` - белый цвет рамки.<br>
+`btn-outline-white` - цвет обводки кнопки.<br>
 Цвета можно выбрать из списка ниже.<br>
 * white _(Белый)_
 * primary _(Синий)_
@@ -55,18 +55,18 @@
 * black _(Черный)_
 
 ## Form
-`.form-control` - bootstrap input.<br>
-`.btn` - bootstrap кнопка.<br>
-`.btn-primary` - синий цвет кнопки.<br>
-`.form-check-input` - bootstrap checkbox/radio input.<br>
+`form-control` - bootstrap input.<br>
+`btn` - bootstrap кнопка.<br>
+`btn-primary` - синий цвет кнопки.<br>
+`form-check-input` - bootstrap checkbox/radio input.<br>
 
 ## Border
-`.border` - включает рамку для элемента.<br>
-`.border-1` - от 1 до 5, размер рамки.<br>
-`.border-opacity-10` - 10, 25, 50, 75, прозрачность рамки.<br>
+`border` - включает рамку для элемента.<br>
+`border-1` - от 1 до 5, размер рамки.<br>
+`border-opacity-10` - 10, 25, 50, 75, прозрачность рамки.<br>
 
 
 ## Shadows
-`.shadow-lg` - большая тень.<br>
-`.shadow` - средняя тень<br>
-`.shadow-sm` - слабая тень.<br>
+`shadow-lg` - большая тень.<br>
+`shadow` - средняя тень<br>
+`shadow-sm` - слабая тень.<br>

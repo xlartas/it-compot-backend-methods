@@ -150,22 +150,30 @@
 >Слово **'клиент'**, можно заменить на **'браузер пользователя'** (однако это не совсем правда).
 
 ### Получение данных с клиента.
+   Любой запрос на сервер, будь то загрузка страницы или отправка данных <br>
+   на сервер сопровождается определенным типом запроса.<br>
+   Например, при обычном переходе по ссылке отправляется GET запрос, <br>
+   а в ответ мы получаем html страницу и связанные css js и т.п.<br><br>
+   
+   Для отправки данных мы используем форму (тег form).<br>
+   Отправлять данные мы можем как через `GET`, так и через `POST`.<br>
+   Атрибут `method` у тега `form` определяет какой тип запроса будет использоваться при отправке.<br>
+   Атрибут `action` у тега `form` определяет на какой адрес будет отправляться запрос.<br>
+   
+   method: Если собираемся менять что-то в базе данных то POST, иначе GET.
+   action: Cсылка, куда будут отправляться данные. Если не указывать, то на ту же страницу.
 
-* Создадим форму для отправки данных.
-  ```html
-  <!-- example.html -->
-  
-  method: Если собираемся менять что-то в базе данных то POST, иначе GET.
-  action: Cсылка, куда будут отправляться данные. Если не указывать, то на ту же страницу.
-  
-  <form method="get" action="">
-      <input type="text" name="name1" placeholder="Подсказка при пустом поле.">
-      <input type="text" name="name2" value="Уже установленное значение.">
-      <input type="hidden" name="name3" value="Невидимое поле">
-      <button type="submit">Кнопка подтверждения отправки</button>
-  </form>
-  ```    
-  ![](imgs/form.png)
+   * Создадим форму для отправки данных.
+       ```html
+       <!-- example.html -->
+       <form method="get" action="">
+           <input type="text" name="name1" placeholder="Подсказка при пустом поле.">
+           <input type="text" name="name2" value="Уже установленное значение.">
+           <input type="hidden" name="name3" value="Невидимое поле">
+           <button type="submit">Кнопка подтверждения отправки</button>
+       </form>
+       ```    
+       ![](imgs/form.png)
 
 * Так как action не указан будем получать данные и рендерить страницу в одном view.<br>
   _Не забудьте связать эту функцию с маршрутом_.
@@ -174,11 +182,17 @@
     # views.py
     
     def example_view(request):
-        print(request.GET)
-        print(request.POST)
-        print(request.POST['name1'])
-        print(request.POST['name2'])
-        print(request.POST['name3'])
+        # Так мы можем посмотреть данные отправленные с GET запросом, если их нет, то результатом в консоли будет пустой список.
+        print(request.GET) 
+        # Проверяем Если запрос типа POST
+        if request.method == 'POST':
+            # Так можем распечатать содержимое POST запроса.
+            print(request.POST)
+            # Получаем переменные. 
+            # name1, name2, name3, это значения атрибутов name в input тегах.
+            print(request.POST['name1'])
+            print(request.POST['name2'])
+            print(request.POST['name3'])
         return render(request, 'app_name/example.html')
     ```
 ### Отправка данных клиенту.
@@ -186,14 +200,18 @@
 * Изменим строку с `render` в функции выше.
    ```python
    ...
-   return render(request, 'app_name/example.html', {'key1': 'уууу аааа'})
+   return render(request, 'app_name/example.html', {
+       'key1': 'уууу аааа',
+       'ABCkey2': 'value2',
+   })
    ```
 
 * Теперь мы можем в `example.html` использовать переданную информацию по ключу.
     ```html
     <!-- example.html-->
     ...
-    {{ key1 }} <!-- Тут появиться 'уууу аааа'-->
+    <span>{{ key1 }}<!-- Тут появится 'уууу аааа'--></span> 
+    <p>{{ ABCkey2 }}<!-- Тут появится 'value2'--></p> 
     ...
     ```
 ### Виды полей ввода `input`

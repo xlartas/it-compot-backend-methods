@@ -1,7 +1,6 @@
 # Bootstrap base CLASSES
 
 ## Разное
-
 `fs-1` - размер шрифта от **1** до **6**. <br>
 `fw-bold` - жирный шрифт. <br>
 `text-center` - ставит текст по центру.<br>
@@ -22,6 +21,7 @@
 Цифры от **1** до **5**.<br> 
 Единица = **1**_rem_ = **16**_px_<br>
 
+**Margin**:<br>
 `m-1 ` - со всех сторон<br>
 `mx-1` - по горизонтали<br>
 `my-1` - по вертикали<br>
@@ -31,8 +31,9 @@
 `me-1` - справа 1em<br>
 `mx-auto` - auto по горизонтали<br>
 `my-auto` - auto по вертикали<br>
+`me-auto`, `mt-auto`, `mb-auto` и так далее.
 
-Аналогично padding:<br>
+**Padding** аналогично:<br>
 `p-1 ` - со всех сторон<br>
 `px-1` - по горизонтали<br>
 **.....**
@@ -54,10 +55,15 @@
 * dark _(Темный)_
 * black _(Черный)_
 
+## Positions
+`position-relative`
+`position-absolute`
+`top-0`
+
 ## Form
 `form-control` - bootstrap input.<br>
 `btn` - bootstrap кнопка.<br>
-`btn-primary` - синий цвет кнопки.<br>
+`btn-primary` - синий цвет кнопки (можно подставлять другие цвета из списка выше...).<br>
 `form-check-input` - bootstrap checkbox/radio input.<br>
 
 ## Border

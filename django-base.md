@@ -9,7 +9,7 @@
 - [Обмен данными клиент - сервер](#обмен-данными-клиент----сервер)
   - [Http методы, form](#Http-методы-form)
   - [Отправка данных клиенту](#Отправка-данных-клиенту)
-  - [Виды полей ввода `input`](#Виды-полей-ввода-input)
+  - [Виды полей ввода input](#Виды-полей-ввода-input)
 - [Модели](#models)
   - [Создание модели и миграции](#создание-простейшей-модели-для-товара)
   - [Fields - полям модели](#model-fields)
@@ -27,8 +27,10 @@
 - [Структура проекта](#Структура-проекта)
 
 ### В данной шпаргалке представлены ПРИМЕРЫ взаимодействия с фреймворком django.
-> `venv_name` `project_name` `app_name` - это не конкретные названия, это значит, что вы сами придумываете названия <br>
-> для виртуальной среды, приложений проекта. **_Example_** переводится как **_пример_**, это тоже не конкретное название чего-либо.
+> `venv_name` `project_name` `app_name`, `app` - это не конкретные названия, это значит, что на этих 
+> местах должны быть соответствующие названия (имя приложения, проекта и т.д.). <br>
+> для виртуальной среды, приложений проекта. **_Example_** переводится как **_пример_**, это 
+> тоже не конкретное название чего-либо.
 
 ## <u>Простой старт проекта</u>
 
@@ -76,49 +78,48 @@
 и создать функцию для рендера html странички.
 
 ### Статические маршруты
-В данном примере мы соединим ссылку `http://127.0.0.1:8000/shop/products/` со страничкой `products.html`.
+В данном примере мы соединим ссылку `http://127.0.0.1:8000/some/example/` со страничкой `example.html`.
 
-1. В файле views.py создаем функцию `example_view` которая будет возвращать отрендеренный шаблон `products.html`.
+1. В файле views.py создаем функцию `example_view` которая будет возвращать ответ в формате http с отрендеренным шаблоном `example.html`.
    ```python
-      # views.py
-      def example_view(request):
-          # возвращаем отрендеренную html страничку products
-          return render(request, 'app_name/products.html')  
+   # views.py
+   def example_view(request):
+       return render(request, 'app/example.html')  
    ```
 
-2. В файле urls.py создаем новый маршрут `shop/products/` и соединяем его с функцией `example_view`.
+2. В файле urls.py создаем новый маршрут `some/example/` и соединяем его с функцией `example_view`.
    ```python
-      # urls.py
-      from django.urls import path
-      from app_name.views import example_view  # импортируем из views.py функцию
+   # urls.py
+   from django.urls import path
+   from app.views import example_view  # импортируем из views.py функцию
    
-      urlpatterns = [
-          ...
-          path('shop/products/', example_view),  # связываем адрес и функцию
-      ]
+   urlpatterns = [
+       ...
+       path('some/example/', example_view),  # связываем адрес и функцию
+   ]
    ```
 ### Динамические маршруты
 В данном примере мы будем передавать через ссылку параметры<br> 
-`http://127.0.0.1:8000/shop/products/1/MnogoTexta`.
+`http://127.0.0.1:8000/some/example/1/MnogoTexta`.
 1. #### Добавляем в маршрут динамическую часть `<int:id>` и `<str:text>`.<br>
    Здесь `int` и `str` это обозначение ожидаемого типа параметра.<br>
    `int` для чисел `str` для строк.
    ```python
-      # urls.py
-      urlpatterns = [
-          ...
-          path('shop/products/<int:id>/<str:text>/', example_view),
-      ]
+   # urls.py
+   urlpatterns = [
+       ...
+       path('some/example/<int:id>/<str:text>/', example_view),
+   ]
    ```
-2. #### В файле views.py создаем функцию `example_view` которая будет возвращать отрендеренный шаблон `products.html`.
+2. #### В файле views.py создаем функцию `example_view` с новыми аргументами.
    ```python
-      # views.py
-      def example_view(request, id, text):  
-          # Дополнительные параметры функции example_view после request должны 
-          # называться так же как и параметры в связанной ссылке,.
-          return render(request, 'app_name/products.html')
+   # views.py
+   def example_view(request, id, text):  
+       # Дополнительные параметры функции example_view после request должны 
+       # называться так же как и параметры в связанной ссылке,.
+       return render(request, 'app/example.html')
    ```
-    > Теперь когда мы перейдем по ссылке `http://127.0.0.1:8000/shop/products/1/MnogoTexta`, 
+   > Теперь когда мы перейдем по ссылке `http://127.0.0.1:8000/some/example/1/MnogoTexta`, 
    > получим в параметр `id` цифру `1`, а в параметр `text` строчку `MnogoTexta`.
 
 ### URL naming & redirects (Именование маршрутов и перенаправление)
@@ -134,8 +135,8 @@
          urlpatterns = [
              ...
              # Примеры со статическим и динамическими маршрутами
-             path('shop/products/', example_view1, name='example1'),  
-             path('shop/products/<int:id>/<str:text>/', example_view2, name='example2'),  
+             path('some/example/', example_view1, name='example1'),  
+             path('some/example/<int:id>/<str:text>/', example_view2, name='example2'),  
          ]
          ```
      * Перенаправление:
@@ -147,11 +148,11 @@
           
           
           def some_view(request):
-              return redirect('shop/products/')
+              return redirect('some/example/')
           ```
-          Так мы перенаправим пользователя на адрес http://127.0.0.1:8000/shop/products/ <br><br>
+          Так мы перенаправим пользователя на адрес http://127.0.0.1:8000/some/example/ <br><br>
      
-     * **Шаблонизация маршрутов описана в [этом разделе](https://github.com/xlartas/it-compot-backend-methods/blob/main/django-base.md#Формирование-внутренних-маршрутов-в-шаблоне)**
+     * **Шаблонизация маршрутов описана в [этом разделе](#Формирование-внутренних-маршрутов-в-шаблоне)**
      <br><br>
 
 ## <span id="Обмен-данными-клиент---сервер"><u>Обмен данными</u> `клиент <--> сервер`</span> 
@@ -169,11 +170,12 @@
     
    Для отправки данных мы используем форму (тег `form`).<br>
    > Отправлять данные можно не только через форму, можно, например, через js.
+
    Атрибут `method` у тега `form` определяет какой тип запроса будет использоваться при отправке.<br>
    Атрибут `action` у тега `form` определяет на какой адрес будет отправляться запрос.<br>
    
-   method: post или get, других не добавили.
-   action: Cсылка, куда будут отправляться данные. Если не указывать, то на ту же страницу.
+   `method`: post или get, других не добавили.<br>
+   `action`: Cсылка, куда будут отправляться данные. Если не указывать, то на ту же страницу.
 
    HTTP запросы — это основной способ взаимодействия между клиентом 
    (например, веб-браузером) и сервером. Вот описание основных типов HTTP запросов:
@@ -245,7 +247,7 @@
                   print(request.POST['name1'])
                   print(request.POST['name2'])
                   print(request.POST['name3'])
-              return render(request, 'app_name/example.html')
+              return render(request, 'app/example.html')
           ```
 
 ### Отправка данных клиенту
@@ -257,16 +259,16 @@ def example(request):
        'key1': 'уууу аааа',
        'ABCkey2': 'value2',
    })
-   ```
+```
 
-* Теперь мы можем в `example.html` использовать переданную информацию по ключу.
-    ```html
-    <!-- example.html-->
-    ...
-    <span>{{ key1 }}<!-- Тут появится 'уууу аааа'--></span> 
-    <p>{{ ABCkey2 }}<!-- Тут появится 'value2'--></p> 
-    ...
-    ```
+Теперь мы можем в `example.html` использовать переданную информацию по ключу.
+```html
+<!-- example.html-->
+...
+<span>{{ key1 }}<!-- Тут появится 'уууу аааа'--></span> 
+<p>{{ ABCkey2 }}<!-- Тут появится 'value2'--></p> 
+...
+```
 > Отметим, что сервер не всегда возвращает html страницы. Множество web сервисов api используют json для общения.
 
 ### Виды полей ввода `input`
@@ -551,7 +553,7 @@ INSTALLED_APPS = [
 # models.py
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='products/')
+    image = models.ImageField(upload_to='products/images/')
     # ImageField поле в котором будет храниться ссылка 
     # на загруженный медиа файл (в данном случае картинка)
     # upload_to - путь к папке загрузки данных файлов.
@@ -565,7 +567,7 @@ class Product(models.Model):
 
 # MEDIA_URL - адрес по которому будут доступны media файлы.
 # Вы можете проверить доступ после добавления первого объекта с медиа файлом перейдя по ссылке:
-# http://127.0.0.1:8000/MEDIA_URL/images/IMAGE_NAME/
+# http://127.0.0.1:8000/MEDIA_URL/products/images/IMAGE_NAME/
 MEDIA_URL = '/media/'
 # MEDIA_ROOT - локальный адрес хранения media.
 # Корневая папка проекта + 'media'
@@ -636,7 +638,7 @@ class MyModelAdmin(admin.ModelAdmin):
 ```python
 # views.py
 def example_view(request):  
-    return render(request, 'app_name/example.html')
+    return render(request, 'app/example.html')
 ```
 Чтобы передать переменную в шаблон, нужно третьим параметром в функции `render` <br> 
 передать нужную переменную в словаре под каким-либо именем. <br>
@@ -645,7 +647,7 @@ def example_view(request):
 # views.py
 def example_view(request):  
     param = 999
-    return render(request, 'app_name/example.html', {'param_name': param})
+    return render(request, 'app/example.html', {'param_name': param})
 ```
 Тогда внутри `example.html` мы можем отобразить эту переменную используя `{{ param_name }}`.
 ```html
@@ -675,10 +677,10 @@ def example_view(request):
 ...
 <head>
     ...
-    <link rel="stylesheet" href="{% static 'app_name/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
 </head>
 <body>
-    <img src="{% static 'app_name/img/image.png' %}" alt="">
+    <img src="{% static 'app/img/image.png' %}" alt="">
 </body>
 ``` 
 ### Формирование внутренних маршрутов в шаблоне
@@ -689,24 +691,24 @@ def example_view(request):
 urlpatterns = [
     ...
     # Примеры со статическим и динамическими маршрутами
-    path('shop/products/', example_view1, name='example1'),  
-    path('shop/products/<int:id>/<str:text>/', example_view2, name='example2'),  
+    path('some/example/', example_view1, name='example1'),  
+    path('some/example/<int:id>/<str:text>/', example_view2, name='example2'),  
 ]
 ```
 ```html
 <a href="{% url 'example1' %}">Кликни на меня</a>
 <!-- После рендера такого шаблона мы получим -->
-<a href="/shop/products/">Кликни на меня</a>
+<a href="/some/example/">Кликни на меня</a>
 <!-- Такие, неполные ссылки, ведут на адрес состоящий из домена и этой неполной ссылки.-->
-<!-- Полный вид итоговой ссылки при переходе будет http://127.0.0.1:8000/shop/products/ -->
+<!-- Полный вид итоговой ссылки при переходе будет http://127.0.0.1:8000/some/example/ -->
 
 <!-- Имена можно использовать где угодно внутри шаблона. Вот еще пример.-->
 <form action="{% url 'example1' %}"></form>
 
 <!-- Для шаблонизации динамических ссылок нужно передавать дополнительно необходимые параметры по порядку.-->
-<a href="{% url 'example2' id=123 text='My text' %}">Кликни на меня</a>
+<a href="{% url 'example2' id=100 text='My text' %}">Кликни на меня</a>
 <!-- Часто требуется передавать в маршрут контекстные данные, например -->  
-<a href="{% url 'example2' id=product.id text=product.title %}">Кликни на меня</a>
+<a href="{% url 'example2' id=post.id text=post.title %}">Кликни на меня</a>
 ```
 
 
@@ -721,7 +723,7 @@ def example_view(request):
     # Получаем все продукты в переменную all_products
     all_person = Person.objects.all() 
     # Рендерим наш шаблон передавая переменную all_products под именем all_products.
-    return render(request, 'app_name/example.html', {'all_person': all_person})
+    return render(request, 'app/example.html', {'all_person': all_person})
 ```
 Используем цикл и условие, чтобы отобразить все товары, которые имеют цену меньше 500.<br>
 Запускаем цикл для перебора товаров.<br>
@@ -733,7 +735,7 @@ def example_view(request):
 ...
 <body>
     {% for person in all_person %} 
-        {% if person.age < 500 %}
+        {% if person.age > 18 %}
             <div class="product">
                 <span>{{ person.name }}</span>
                 <span>{{ person.age }}</span>
@@ -746,12 +748,12 @@ def example_view(request):
 ```python
 # views.py
 def example_view(request):  
-    return render(request, 'app_name/example.html', {
+    return render(request, 'app/example.html', {
         'param1': 11231,
         'param2': 'Еще параметр',
         'param3': 'и еще',
         'param4': 999,
-        'productId1': Product.objects.get(id=1),
+        'first_person': Person.objects.get(id=1),
     })
 ```
 
@@ -774,13 +776,13 @@ def example_view(request):
 ```html
 <!-- Ваш основной шаблон страницы -->
 <div class="header">
-    {% include 'app_name/includes/header.html' %}
+    {% include 'app/includes/header.html' %}
 </div>
 <div class="content">
     <!-- Контент вашей страницы -->
 </div>
 <div class="footer">
-    {% include 'app_name/includes/footer.html' %}
+    {% include 'app/includes/footer.html' %}
 </div>
 ```
 
@@ -788,13 +790,13 @@ def example_view(request):
 В Django, тег `{% include %}` позволяет вставить один шаблон в другой. <br>
 Чтобы передать переменные в этот включенный шаблон, вы можете использовать `with`.
 ```html
-<!-- app_name/main.html -->
+<!-- app/main.html -->
 ...
 {% include "card.html" with name="John" age=30 %}
 ...
 ```
 ```html
-<!-- app_name/includes/card.html -->
+<!-- app/includes/card.html -->
 
 <!-- Файл для вставки(include) -->
 <div class="card">
@@ -820,7 +822,7 @@ def example_view(request):
 прописываются 1 раз, а после этот шаблон расширяется контентом уникальным для разных страниц.<br>
 
 ```html
-<!-- templates/app_name/base.html -->
+<!-- templates/app/base.html -->
 
 <!-- Шаблон который будем заполнять контентом / расширять -->
 <html>
@@ -833,7 +835,7 @@ def example_view(request):
 </html>
 ```
 ```html
-<!-- templates/app_name/page.html -->
+<!-- templates/app/page.html -->
 
 <!-- За основу берем base.html и вместо блока content -->
 <!-- подставляем свой параграфи или любой другой код, -->

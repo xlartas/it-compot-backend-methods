@@ -4,4 +4,4 @@
 <br>
 <br>
 
-[kinopoisk_data_v1.zip](https://disk.yandex.ru/d/aM_Q56buqbYDkA)
+[kinopoisk_data_v1.zip](https://disk.yandex.ru/d/3kPG8ESOW_GbRg)
